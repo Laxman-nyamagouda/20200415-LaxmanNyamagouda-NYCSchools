@@ -12,7 +12,7 @@ class SchoolDetailsViewModel {
     
     var selectedSchoolFromSchoolList: SATResultResponseDataModelElement?
     
-//    init(selectedSchoolFromSchoolList: NYCSchoolListResponseDataModelElement) {
-//        self.selectedSchoolFromSchoolList = selectedSchoolFromSchoolList
-//    }
+    init(selectedSchoolFromSchoolList: SATResultResponseDataModelElement?) {
+        self.selectedSchoolFromSchoolList = selectedSchoolFromSchoolList
+    }
 }

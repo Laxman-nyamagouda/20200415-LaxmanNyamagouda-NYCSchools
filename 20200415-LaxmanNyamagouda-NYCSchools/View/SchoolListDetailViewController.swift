@@ -22,13 +22,12 @@ class SchoolListDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.title = "Details"
         
+        self.title = "Details"
         guard (viewModel?.selectedSchoolFromSchoolList) != nil else {
             showAlert()
             return
         }
-        
         if let schoolName = viewModel?.selectedSchoolFromSchoolList?.schoolName {
             self.schoolName.text = "School Name: \n\(schoolName)"
         }
@@ -44,7 +43,6 @@ class SchoolListDetailViewController: UIViewController {
         if let satWritingAvgScore = viewModel?.selectedSchoolFromSchoolList?.satWritingAvgScore {
             self.satWritingAvgScore.text = "SAT Writing Avg Score: \n\(satWritingAvgScore)"
         }
-        
     }
     
     // MARK: - Show alert in case service did not return any results

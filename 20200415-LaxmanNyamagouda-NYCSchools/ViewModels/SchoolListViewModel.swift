@@ -8,7 +8,7 @@
 
 import Foundation
 
-class SchoolListViewModel {
+final class SchoolListViewModel {
     
     // MARK: - Properties
     var schoolList: [NYCSchoolListResponseDataModelElement]? {
@@ -16,10 +16,12 @@ class SchoolListViewModel {
             self.didFinishFetch?()
         }
     }
+
+    // Make variables private wherever possible
     var schoolSATResults: [SATResultResponseDataModelElement]?
     var selectedSchoolFromSchoolList: SATResultResponseDataModelElement?
-    
-    private var dataService: DataService?
+
+    private let dataService: DataService?
     var schoolTitleString: String?
     var albumIdString: String?
     var error: Error? {
@@ -37,59 +39,40 @@ class SchoolListViewModel {
     
     // MARK: - Network call
     func fetchSchoolList() {
-        self.dataService?.requestFetchSchoolList(completion: { (schoolList, error) in
-            if let error = error {
-                self.error = error
+        self.dataService?.requestFetchSchoolList(completion: { [weak self] (schoolList, error)  in
+            guard let schoolList = schoolList else {
+                self?.error = error
                 return
             }
-            self.error = nil
-            self.schoolList = schoolList
+            self?.error = nil
+            self?.schoolList = schoolList
         })
     }
     
     // MARK: - Network call
     func fetchSATResults() {
-        self.dataService?.requestFetchSATResults(completion: { (schoolSATResults, error) in
-            if let error = error {
-                self.error = error
+        self.dataService?.requestFetchSATResults(completion: { [weak self] (schoolSATResults, error) in
+            guard let schoolSATResults = schoolSATResults else {
+                self?.error = error
                 return
             }
-            self.error = nil
-            self.schoolSATResults = schoolSATResults
+            self?.error = nil
+            self?.schoolSATResults = schoolSATResults
         })
     }
     
     func schoolSelected(index: Int) {
-        
-        if let schoolSATResults = self.schoolSATResults, schoolSATResults.count > 0, let schoolList = self.schoolList, schoolList.count > 0 {
-            if index < schoolSATResults.count - 1 {
-                let selectedSchool = schoolList[index]
-                print(selectedSchool.schoolName as Any)
-                
-                for schoolResults in schoolSATResults {
-                    if case schoolResults.dbn = selectedSchool.dbn {
-                        self.selectedSchoolFromSchoolList = schoolResults
-                        return
-                    } else {
-                        self.selectedSchoolFromSchoolList = nil
-                    }
-                }
-            }
-            
+        guard let schoolSATResults = self.schoolSATResults,
+            schoolSATResults.count > 0,
+            let schoolList = self.schoolList,
+            schoolList.count > 0,
+            index < schoolSATResults.count - 1 else { return }
+
+        let selectedSchool = schoolList[index]
+        if let i = schoolSATResults.firstIndex(where: { $0.dbn ==  selectedSchool.dbn}) {
+            self.selectedSchoolFromSchoolList = schoolSATResults[i]
+        } else {
+            self.selectedSchoolFromSchoolList = nil
         }
     }
-
-    // MARK: - UI Logic
-//    private func setupSchoolList(with schoolList: [NYCSchoolListResponseDataModelElement]) {
-//        if let schoolList = schoolList{
-//            self.schoolTitleString = schoolList
-//            self.albumIdString = "Album ID for this photo : \(albumId)"
-//
-//            // formatting url from http to https
-//            guard let formattedUrlString = String.replaceHttpToHttps(with: urlString), let url = URL(string: formattedUrlString) else {
-//                return
-//            }
-//            self.photoUrl = url
-//        }
-//    }
 }

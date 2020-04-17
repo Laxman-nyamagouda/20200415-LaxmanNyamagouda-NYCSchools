@@ -21,6 +21,7 @@ struct Constants {
     // MARK: - URL
     let schoolListUrl = URL(string: constructSchoolListURLString())
     let satScoreUrl = URL(string: constructSATResultsURLString())
+    let tableViewHeight = 80.0
     
     public static func constructSchoolListURLString() -> String {
         let urlString = "https://data.cityofnewyork.us/resource/s3k6-pzi2.json?\(HeaderFieldNames.limitKey)=\(HeaderFieldNames.limit)&\(HeaderFieldNames.appTokenKey)=\(HeaderFieldNames.appToken)"
