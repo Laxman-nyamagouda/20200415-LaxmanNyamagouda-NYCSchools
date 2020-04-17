@@ -12,7 +12,7 @@ import Foundation
 typealias SATResultResponseDataModel = [SATResultResponseDataModelElement]
 
 // MARK: - SATResultResponseDataModelElement
-@objcMembers class SATResultResponseDataModelElement: NSObject, Codable {
+class SATResultResponseDataModelElement: Codable {
     var dbn, schoolName, numOfSatTestTakers, satCriticalReadingAvgScore: String?
     var satMathAvgScore, satWritingAvgScore: String?
     var instructions: [String]?

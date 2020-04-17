@@ -14,7 +14,7 @@ class SchoolListTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         //Set up cell
-        
+        // Customizing the cell if required
     }
 }
 

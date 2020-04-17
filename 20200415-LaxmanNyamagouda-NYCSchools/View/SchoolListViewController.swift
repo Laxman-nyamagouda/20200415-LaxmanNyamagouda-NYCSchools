@@ -8,19 +8,13 @@
 
 import UIKit
 
-protocol schoolSelectable {
-    func schoolSelected(index: Int)
-}
-
 class SchoolListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Dependency Injection
-    let viewModel = SchoolListViewModel(dataService: DataService())
-    var selectionDelegate: schoolSelectable?
-    
+    let viewModel = SchoolListViewModel(dataService: DataService())    
     var didSelectSchool: ((_ index: Int) -> ())?
     
     override func viewDidLoad() {
@@ -79,6 +73,7 @@ class SchoolListViewController: UIViewController {
 extension SchoolListViewController: UITableViewDelegate, UITableViewDataSource  {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
         if let schoolList = viewModel.schoolList {
             return schoolList.count
         }
@@ -94,18 +89,15 @@ extension SchoolListViewController: UITableViewDelegate, UITableViewDataSource  
      }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return CGFloat(Constants().tableViewHeight)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         viewModel.schoolSelected(index: indexPath.row)
-        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SchoolListDetailViewController") as? SchoolListDetailViewController
-        let model = SchoolDetailsViewModel()
-        model.selectedSchoolFromSchoolList = viewModel.selectedSchoolFromSchoolList
-        vc?.viewModel = model
-        //vc?.viewModel?.selectedSchoolFromSchoolList = viewModel.selectedSchoolFromSchoolList
-        self.navigationController?.pushViewController(vc!, animated: true)
+        let detailViewController = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SchoolListDetailViewController") as? SchoolListDetailViewController
+        detailViewController?.viewModel = SchoolDetailsViewModel(selectedSchoolFromSchoolList: viewModel.selectedSchoolFromSchoolList)
+        self.navigationController?.pushViewController(detailViewController!, animated: true)
     }
  
 }
