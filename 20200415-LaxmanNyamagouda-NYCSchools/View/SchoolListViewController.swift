@@ -34,6 +34,7 @@ class SchoolListViewController: UIViewController {
         
         viewModel.showAlertClosure = { [weak self] in
             if let error = self?.viewModel.error {
+                //UI must be updated on main thread
                 DispatchQueue.main.async {
                     self?.showAlert()
                     self?.activityIndicatorStop()
@@ -43,6 +44,7 @@ class SchoolListViewController: UIViewController {
         }
         
         viewModel.didFinishFetch = { [weak self] in
+            //UI must be updated on main thread
             DispatchQueue.main.async {
                 self?.activityIndicatorStop()
                 self?.tableView.reloadData()
@@ -60,11 +62,13 @@ class SchoolListViewController: UIViewController {
     
     // MARK: - Set up Activity indicator start and Activity indicator stop
     private func activityIndicatorStart() {
+        //Activity indicator start
         self.activityIndicator.hidesWhenStopped = true
         self.activityIndicator.startAnimating()
     }
     
     private func activityIndicatorStop() {
+        //Activity indicator stop
         self.activityIndicator.stopAnimating()
     }
 }

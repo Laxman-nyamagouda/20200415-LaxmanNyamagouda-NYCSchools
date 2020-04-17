@@ -62,7 +62,7 @@ class DataService {
             }
         }
      }
-    
+    //Future: We can cache the response of network calls if its static static content and not changing for a while
     func makeNetworkCall(url: URL, completion: @escaping (Data?, Error?) -> ()) {
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in

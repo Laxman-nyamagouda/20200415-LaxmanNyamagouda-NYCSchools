@@ -9,7 +9,7 @@
 import Foundation
 
 import XCTest
-
+//Future: We can write Unit test cases for ViewModels and UI 
 class SchoolListAPIHelperTest: XCTestCase {
 
     override func setUp() {
